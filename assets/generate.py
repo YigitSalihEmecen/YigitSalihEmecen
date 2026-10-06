@@ -11,9 +11,9 @@ OUT = Path(__file__).parent
 FONT = "'EB Garamond', Garamond, 'Times New Roman', Georgia, serif"
 THEMES = {
     "light": {"ink": "#111111", "muted": "#555555", "rule": "#999999", "faint": "#d9d9d9",
-              "accent": "#A51C30", "card": "#FAFAFA"},
+              "accent": "#A51C30", "card": "#FAFAFA", "bg": "#FFFFFF"},
     "dark": {"ink": "#e8e8e8", "muted": "#a8a8a8", "rule": "#6b6b6b", "faint": "#30363d",
-             "accent": "#E8788A", "card": "#161B22"},
+             "accent": "#E8788A", "card": "#161B22", "bg": "#0D1117"},
 }
 W = 800
 
@@ -113,23 +113,60 @@ def header(t):
     return svg(W, 196, "".join(body), "Yiğit Salih Emecen, robotics and software engineer")
 
 
-STATS = [("7", "Erasmus+ partners"), ("240 Hz", "LiDAR mapping"), ("6 to 1", "Repos, one workspace"),
-         ("€5", "Plotter build cost"), ("10+", "Game Boy titles")]
+X0, X1 = 2020.5, 2027.0  # timeline axis, in years
 
 
-def stats(t):
-    col = W / len(STATS)
-    g = [f'<line x1="0" y1="0.5" x2="{W}" y2="0.5" stroke="{t["rule"]}"/>',
-         f'<line x1="0" y1="95.5" x2="{W}" y2="95.5" stroke="{t["rule"]}"/>']
-    for i, (num, cap) in enumerate(STATS):
-        cx = col * i + col / 2
-        g.append(text(f"{cx:.0f}", 54, num, 40, t["ink"], anchor="middle", weight="500"))
-        g.append(small_caps(cap, 12, 10, f"{cx:.0f}", 78, t["muted"], spacing="0.9", weight="400",
-                            anchor="middle"))
-        if i:
-            g.append(f'<line x1="{col * i:.0f}" y1="20" x2="{col * i:.0f}" y2="76" stroke="{t["faint"]}"/>')
-    return svg(W, 96, "".join(g), "7 Erasmus+ partners, 240 Hz LiDAR mapping, 6 repos merged into one "
-                                  "workspace, a 5 euro plotter, 10+ Game Boy titles")
+def tx(year):
+    return (year - X0) / (X1 - X0) * W
+
+
+def timeline(t):
+    """Education, work and projects on one time axis. Bars that are still running fade out to the right."""
+    bg = t["bg"]
+    g = [f'<defs><linearGradient id="fa" x1="0" x2="1"><stop offset="0.7" stop-color="{t["accent"]}"/>'
+         f'<stop offset="1" stop-color="{t["accent"]}" stop-opacity="0.35"/></linearGradient>'
+         f'<linearGradient id="fi" x1="0" x2="1"><stop offset="0.7" stop-color="{t["ink"]}"/>'
+         f'<stop offset="1" stop-color="{t["ink"]}" stop-opacity="0.35"/></linearGradient></defs>']
+    for yr in range(2021, 2027):
+        x = tx(yr)
+        g.append(f'<line x1="{x:.1f}" y1="26" x2="{x:.1f}" y2="176" stroke="{t["faint"]}" stroke-width="0.8"/>')
+        g.append(text(f"{x:.1f}", 194, str(yr), 12.5, t["muted"], anchor="middle"))
+    g.append(f'<line x1="0" y1="176" x2="{W}" y2="176" stroke="{t["rule"]}"/>')
+
+    def bar(y, h, a, b, fill, label=None, lab_fill=None):
+        out = [f'<rect x="{tx(a):.1f}" y="{y}" width="{tx(b) - tx(a):.1f}" height="{h}" rx="3" fill="{fill}"/>']
+        if label:
+            centered = tx(b) - tx(a) > 300
+            lx = (tx(a) + tx(b)) / 2 if centered else tx(a) + 10
+            out.append(text(f"{lx:.1f}", y + h / 2 + 4.3, label, 12.5, lab_fill or bg,
+                            anchor="middle" if centered else "start", weight="500"))
+        return "".join(out)
+
+    # education
+    g.append(bar(34, 24, 2020.58, 2025.58, t["ink"], "B.Sc. Electrical & Electronics Engineering, İstanbul Ticaret"))
+    g.append(bar(34, 24, 2026.17, X1, "url(#fi)", "M.Sc. TU Wien"))
+    # work
+    g.append(text(f"{tx(2024.08) - 8:.1f}", 83, "Exchange, FH Technikum", 12.5, t["muted"], anchor="end", style="italic"))
+    g.append(bar(66, 24, 2024.08, 2024.58, t["muted"]))
+    g.append(text(f"{tx(2025.5) - 8:.1f}", 83, "Robotics intern", 12.5, t["muted"], anchor="end", style="italic"))
+    g.append(bar(66, 24, 2025.5, 2025.67, t["muted"]))
+    g.append(bar(66, 24, 2025.75, X1, "url(#fa)", "TU Wien IFT"))
+    # projects: running bars, then single-moment dots
+    for a, b, label in [(2024.67, 2025.92, "Open LiDAR"), (2026.33, X1, "YellowBoy")]:
+        g.append(bar(100, 8, a, b, t["accent"] if b == X1 else t["muted"]))
+        g.append(text(f"{tx(a) + 2:.1f}", 126, label, 12.5, t["ink"]))
+    for yr, label in [(2023.42, "Wireless MIDI"), (2025.5, "Milestone Award"), (2026.67, "PolarBot")]:
+        x = tx(yr)
+        g.append(f'<circle cx="{x:.1f}" cy="146" r="4.5" fill="{bg}" stroke="{t["accent"]}" stroke-width="2"/>')
+        g.append(text(f"{x:.1f}", 166, label, 12.5, t["ink"], anchor="middle"))
+    now = tx(2026.77)
+    g.append(f'<line x1="{now:.1f}" y1="22" x2="{now:.1f}" y2="112" stroke="{t["accent"]}" stroke-width="1" '
+             f'stroke-dasharray="3 3"/>')
+    g.append(small_caps("Now", 12, 10, f"{now:.1f}", 14, t["accent"], spacing="1", anchor="middle"))
+    alt = ("Timeline: B.Sc. at Istanbul Ticaret 2020 to 2025, exchange semester at FH Technikum Wien 2024, "
+           "robotics internship 2025, TU Wien IFT since Oct 2025, M.Sc. at TU Wien since Mar 2026; projects "
+           "Wireless MIDI 2023, Open LiDAR 2024 to 2025, Milestone Award 2025, YellowBoy 2026, PolarBot 2026")
+    return svg(W, 204, "".join(g), alt)
 
 
 def section(title, t):
@@ -308,7 +345,7 @@ def stack(t):
     return svg(W, y, "".join(g), alt)
 
 
-SECTIONS = ["Profile", "Currently", "Selected Projects", "More Projects", "Technical Skills",
+SECTIONS = ["Timeline", "Profile", "Currently", "Selected Projects", "More Projects", "Technical Skills",
             "Background", "Recognition", "Beyond Code"]
 
 
@@ -320,7 +357,7 @@ for old in OUT.glob("*.svg"):
     old.unlink()
 for mode, t in THEMES.items():
     (OUT / f"header-{mode}.svg").write_text(header(t), encoding="utf-8")
-    (OUT / f"stats-{mode}.svg").write_text(stats(t), encoding="utf-8")
+    (OUT / f"career-{mode}.svg").write_text(timeline(t), encoding="utf-8")
     (OUT / f"stack-{mode}.svg").write_text(stack(t), encoding="utf-8")
     for s in SECTIONS:
         (OUT / f"{slug(s)}-{mode}.svg").write_text(section(s, t), encoding="utf-8")

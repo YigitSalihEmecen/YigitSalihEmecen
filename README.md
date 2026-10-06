@@ -10,8 +10,12 @@
 </p>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="7 Erasmus+ partners, 240 Hz LiDAR mapping, 6 repos merged into one workspace, a 5 euro plotter, 10+ Game Boy titles" src="assets/stats-light.svg" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/timeline-dark.svg">
+  <img alt="Timeline" src="assets/timeline-light.svg" width="100%">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/career-dark.svg">
+  <img alt="Timeline: B.Sc. at Istanbul Ticaret 2020 to 2025, exchange semester at FH Technikum Wien 2024, robotics internship 2025, TU Wien IFT since Oct 2025, M.Sc. at TU Wien since Mar 2026; projects Wireless MIDI 2023, Open LiDAR 2024 to 2025, Milestone Award 2025, YellowBoy 2026, PolarBot 2026" src="assets/career-light.svg" width="100%">
 </picture>
 
 <picture>
