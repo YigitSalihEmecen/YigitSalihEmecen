@@ -29,6 +29,7 @@ def small_caps(text, big, small, x, y, fill, spacing="0.6", weight="700"):
 
 
 def svg(width, height, body, title):
+    title = title.replace("&", "&amp;")
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
             f'viewBox="0 0 {width} {height}" role="img" aria-label="{title}">'
             f'<title>{title}</title>{body}</svg>\n')
