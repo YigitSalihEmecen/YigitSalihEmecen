@@ -131,27 +131,23 @@ def icon_polar(t):
 
 
 def icon_gameboy(t):
-    """The YellowBoy handheld as built: cream body, black screen bezel, two olive plus-pads, 3-slot speaker."""
-    cream, black, screen, olive, olive_dark = "#E7E2D6", "#121212", "#2C2F31", "#6B6E3A", "#4E5129"
-
-    def plus(cx, cy, half=9.8, arm=7.0):
+    """The YellowBoy handheld as built: squarish body, bezel and screen, two plus-pads, three-slot speaker."""
+    def plus(cx, cy, half=7.0, arm=5.0):
         a = arm / 2
         pts = [(-a, -half), (a, -half), (a, -a), (half, -a), (half, a), (a, a), (a, half), (-a, half),
                (-a, a), (-half, a), (-half, -a), (-a, -a)]
         d = " ".join(f"{cx + x:.1f},{cy + y:.1f}" for x, y in pts)
-        return (f'<polygon points="{d}" fill="{olive}" stroke="{black}" stroke-width="2.6" '
-                f'stroke-linejoin="round"/>'
-                f'<circle cx="{cx}" cy="{cy}" r="1.7" fill="{olive_dark}"/>')
+        return (f'<polygon points="{d}" fill="{t["accent"]}" fill-opacity="0.85" stroke="{t["ink"]}" '
+                f'stroke-width="1.5" stroke-linejoin="round"/>')
 
-    g = [f'<rect x="10" y="1.5" width="76" height="93" rx="7" fill="{cream}" stroke="{t["muted"]}" '
-         f'stroke-width="1"/>',
-         f'<rect x="21.5" y="6.5" width="53" height="40.5" rx="5" fill="{black}"/>',
-         f'<rect x="26.5" y="10.2" width="43" height="33.2" rx="1.2" fill="{screen}"/>',
-         f'<polygon points="52,10.2 69.5,10.2 69.5,24 " fill="#FFFFFF" fill-opacity="0.07"/>',
-         plus(29.5, 64), plus(66.5, 63)]
+    g = [f'<rect x="12" y="2" width="72" height="92" rx="7" fill="none" stroke="{t["ink"]}" stroke-width="1.6"/>',
+         f'<rect x="22" y="8" width="52" height="38" rx="4.5" fill="none" stroke="{t["ink"]}" stroke-width="1.5"/>',
+         f'<rect x="27" y="12.5" width="42" height="29" rx="1.5" fill="{t["accent"]}" fill-opacity="0.10" '
+         f'stroke="{t["muted"]}" stroke-width="1"/>',
+         plus(27, 66), plus(69, 66)]
     for i in range(3):
-        g.append(f'<rect x="39" y="{53.2 + i * 5.8:.1f}" width="18" height="4.2" rx="2.1" fill="{black}"/>')
-        g.append(f'<rect x="41" y="{54.4 + i * 5.8:.1f}" width="14" height="1.8" rx="0.9" fill="#3a3d3f"/>')
+        g.append(f'<rect x="41" y="{59.3 + i * 5.2:.1f}" width="14" height="3" rx="1.5" fill="none" '
+                 f'stroke="{t["ink"]}" stroke-width="1.3"/>')
     return "".join(g)
 
 
