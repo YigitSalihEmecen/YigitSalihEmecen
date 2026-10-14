@@ -1,6 +1,6 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/header-dark.svg?v=5">
-  <img alt="Yiğit Salih Emecen, robotics and software engineer" src="assets/header-light.svg?v=5" width="100%">
+  <img alt="Yigit Salih Emecen, robotics and software engineer" src="assets/header-light.svg?v=5" width="100%">
 </picture>
 
 <p>
