@@ -151,10 +151,6 @@ def icon_gameboy(t):
     return "".join(g)
 
 
-def icon_lidar(t):
-    return lidar_scene(48, 48, 44, t, n=90, rings=3, seed=11)
-
-
 def icon_cycloid(t):
     R, r, d = 5, 3, 5
     pts = []
@@ -196,31 +192,18 @@ def icon_wave(t):
             f'stroke-linejoin="round"/>')
 
 
-def icon_midi(t):
-    g = [f'<g transform="rotate(-24 48 66)"><rect x="30" y="56" width="36" height="20" rx="3" fill="none" '
-         f'stroke="{t["ink"]}" stroke-width="1.5"/><circle cx="40" cy="66" r="2" fill="{t["ink"]}"/>'
-         f'<circle cx="56" cy="66" r="2" fill="{t["ink"]}"/></g>']
-    for i, r in enumerate((14, 26, 38)):
-        a1, a2 = math.radians(-135), math.radians(-45)
-        p1 = (48 + r * math.cos(a1), 44 + r * math.sin(a1))
-        p2 = (48 + r * math.cos(a2), 44 + r * math.sin(a2))
-        g.append(f'<path d="M{p1[0]:.1f} {p1[1]:.1f} A{r} {r} 0 0 1 {p2[0]:.1f} {p2[1]:.1f}" fill="none" '
-                 f'stroke="{t["accent"]}" stroke-width="1.6" stroke-linecap="round"/>')
-    g.append(f'<circle cx="48" cy="44" r="2.5" fill="{t["accent"]}"/>')
-    return "".join(g)
-
-
-def icon_ransac(t):
-    rnd = random.Random(5)
-    g = [f'<polygon points="4,78 4,58 92,22 92,42" fill="{t["accent"]}" fill-opacity="0.10"/>',
-         f'<line x1="4" y1="68" x2="92" y2="32" stroke="{t["accent"]}" stroke-width="1.6"/>']
-    for _ in range(26):
-        x = rnd.uniform(6, 90)
-        y = 68 - (x - 4) * 36 / 88 + rnd.uniform(-7, 7)
-        g.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2" fill="{t["accent"]}"/>')
-    for _ in range(9):
-        g.append(f'<circle cx="{rnd.uniform(6, 90):.1f}" cy="{rnd.uniform(6, 90):.1f}" r="2" fill="none" '
-                 f'stroke="{t["muted"]}" stroke-width="1.1"/>')
+def icon_road(t):
+    """A straight road running to the horizon under a setting sun."""
+    hz = 50
+    g = [f'<circle cx="48" cy="{hz}" r="15" fill="{t["accent"]}" fill-opacity="0.85"/>',
+         f'<rect x="0" y="{hz}" width="96" height="{96 - hz}" fill="{t["card"]}"/>',
+         f'<line x1="0" y1="{hz}" x2="96" y2="{hz}" stroke="{t["ink"]}" stroke-width="1.3"/>',
+         f'<path d="M45 {hz} L6 94 M51 {hz} L90 94" stroke="{t["ink"]}" stroke-width="1.6" fill="none"/>']
+    for y0, y1 in ((53, 56), (60, 65), (71, 79), (86, 94)):
+        g.append(f'<line x1="48" y1="{y0}" x2="48" y2="{y1}" stroke="{t["accent"]}" stroke-width="{0.8 + (y0 - hz) / 20:.2f}" '
+                 f'stroke-linecap="round"/>')
+    for i, y in enumerate((hz - 7, hz - 3)):
+        g.append(f'<line x1="{30 - i * 4}" y1="{y}" x2="{66 + i * 4}" y2="{y}" stroke="{t["card"]}" stroke-width="1.6"/>')
     return "".join(g)
 
 
@@ -229,18 +212,14 @@ CARDS = [
      ["A €5 WiFi plotter with polar", "kinematics and fully 3D-printed", "parts. Browser control panel."]),
     ("yellowboy", "YellowBoy", "C++ · ESP32", icon_gameboy,
      ["A Game Boy emulator that fits in", "the ESP32's internal SRAM, no", "PSRAM. Analog audio, SD ROMs."]),
-    ("open-lidar", "Open LiDAR", "Python · C++", icon_lidar,
-     ["Open source 360° LiDAR and robot", "platform. 240 Hz real-time", "mapping, slip ring removed."]),
     ("cycloidal", "Cycloidal Gear Generator", "JavaScript · live demo", icon_cycloid,
      ["Design a cycloidal reduction by", "tuning every parameter, right", "in the browser."]),
     ("tree-gen", "Tree-Gen", "JavaScript · live demo", icon_tree,
      ["Generates a wide variety of tree", "models you can download.", "Free, runs in the browser."]),
     ("engine-sim", "Engine Sim", "JavaScript · live demo", icon_wave,
      ["A realistic engine sound", "simulator that runs in your", "browser."]),
-    ("midi", "Wireless MIDI Control", "C++ · ESP8266", icon_midi,
-     ["Tilt-sensing device that streams", "MIDI over WiFi (RTP-MIDI) to", "control guitar effects."]),
-    ("ransac", "RANSAC Visualiser", "C#", icon_ransac,
-     ["Shows how RANSAC works on", "simulated LiDAR point-cloud", "data."]),
+    ("horizon", "To The Horizon", "JavaScript · live demo", icon_road,
+     ["An endless procedural driving", "simulator with realistic engine", "sounds."]),
 ]
 
 
@@ -293,7 +272,7 @@ def stack(t):
 
 
 SECTIONS = ["Profile", "Currently", "Selected Projects", "More Projects", "Technical Skills",
-            "Background", "Recognition", "Beyond Code"]
+            "Background", "Beyond Code"]
 
 
 def slug(s):
