@@ -6,6 +6,7 @@
 <p>
   <a href="mailto:ysalih.emecen@gmail.com">ysalih.emecen@gmail.com</a> &nbsp;&bull;&nbsp;
   <a href="https://www.linkedin.com/in/yigit-emecen-509b7b1b7/">LinkedIn</a> &nbsp;&bull;&nbsp;
+  <a href="https://makerworld.com/en/@vishingad">MakerWorld</a> &nbsp;&bull;&nbsp;
   Vienna, Austria
 </p>
 
@@ -104,4 +105,4 @@ I can't control how broad my interests get. Something random catches my eye, I f
   <img alt="Beyond Code" src="assets/beyond-code-light.svg?v=6" width="100%">
 </picture>
 
-I like designing and building hardware end to end, and I publish 3D-printable models on MakerWorld. I play guitar and a few other instruments, and I compose soundtracks for game jams. Languages: Turkish (native), English (C1), German (learning, A1).
+I like designing and building hardware end to end, and I publish 3D-printable models on [MakerWorld](https://makerworld.com/en/@vishingad). I play guitar and a few other instruments, and I compose soundtracks for game jams. Languages: Turkish (native), English (C1), German (learning, A1).
