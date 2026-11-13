@@ -79,6 +79,7 @@ I can't control how broad my interests get. Something random catches my eye, I f
 </picture>
 
 - **Generators:** [Bridge-Gen](https://yigitsalihemecen.github.io/Bridge-Gen/), [City-Gen](https://yigitsalihemecen.github.io/City-Gen/), [Car-Gen](https://yigitsalihemecen.github.io/Car-Gen/), [Roadsign-Gen](https://yigitsalihemecen.github.io/Roadsign-gen/)
+- **Tools:** [G-code Editor](https://yigitsalihemecen.github.io/gcode-editor/) (scale and offset G-code)
 - **Hardware & robotics:** [Open LiDAR](https://github.com/YigitSalihEmecen/Open_LiDAR), [RANSAC Visualiser](https://github.com/YigitSalihEmecen/RANSAC_Visualiser), [Wireless MIDI Control](https://github.com/YigitSalihEmecen/esp8266-Wireless-MIDI-Control)
 
 <picture>
