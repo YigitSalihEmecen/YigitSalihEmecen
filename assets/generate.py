@@ -164,7 +164,7 @@ CARDS = [
     ("polarbot", "PolarBot", "ESP8266 · JavaScript", icon_polar,
      ["A €5 WiFi plotter with polar", "kinematics and fully 3D-printed", "parts. Browser control panel."]),
     ("yellowboy", "YellowBoy", "C++ · ESP32", icon_gameboy,
-     ["A Game Boy emulator that fits in", "the ESP32's internal SRAM, no", "PSRAM. Analog audio, SD ROMs."]),
+     ["An open-source handheld console", "on the ESP32 Cheap Yellow Display.", "3D-printed. Runs Game Boy games."]),
     ("cycloidal", "Cycloidal Gear Generator", "JavaScript · live demo", icon_cycloid,
      ["Design a cycloidal reduction by", "tuning every parameter, right", "in the browser."]),
     ("tree-gen", "Tree-Gen", "JavaScript · live demo", icon_tree,
