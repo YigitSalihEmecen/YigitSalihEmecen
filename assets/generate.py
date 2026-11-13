@@ -1,10 +1,9 @@
 """Generates every SVG graphic used by README.md, in a light and a dark variant.
 
 Run from the repository root:  python3 assets/generate.py
-Standard library only. Everything is deterministic (fixed random seeds).
+Standard library only. Everything is deterministic.
 """
 import math
-import random
 from pathlib import Path
 
 OUT = Path(__file__).parent
@@ -56,51 +55,6 @@ def rule(y, t, width=W):
             f'<line x1="0" y1="{y}" x2="56" y2="{y}" stroke="{t["accent"]}" stroke-width="2.5"/>')
 
 
-# ---------------------------------------------------------------- LiDAR scene
-def lidar_scene(cx, cy, R, t, n=170, rings=4, sweep=True, seed=7):
-    """A 2D LiDAR scan: range rings, a wobbly room, three obstacles, a sweeping beam."""
-    rnd = random.Random(seed)
-    g = []
-    for i in range(1, rings + 1):
-        g.append(f'<circle cx="{cx}" cy="{cy}" r="{R * i / rings:.1f}" fill="none" '
-                 f'stroke="{t["faint"]}" stroke-width="0.8"/>')
-    for k in range(12):
-        a = math.radians(k * 30)
-        g.append(f'<line x1="{cx}" y1="{cy}" x2="{cx + R * math.cos(a):.1f}" y2="{cy + R * math.sin(a):.1f}" '
-                 f'stroke="{t["faint"]}" stroke-width="0.6"/>')
-    obstacles = [(0.45 * R, math.radians(40), 0.14 * R), (0.5 * R, math.radians(215), 0.12 * R),
-                 (0.3 * R, math.radians(300), 0.10 * R)]
-    pts = []
-    for i in range(n):
-        th = 2 * math.pi * i / n
-        r = R * (0.80 + 0.10 * math.sin(3 * th + 0.6) + 0.05 * math.sin(7 * th)) + rnd.uniform(-0.8, 0.8)
-        hit = False
-        for od, oa, orad in obstacles:
-            ox, oy = od * math.cos(oa), od * math.sin(oa)
-            dx, dy = math.cos(th), math.sin(th)
-            b = dx * ox + dy * oy
-            disc = b * b - (ox * ox + oy * oy - orad * orad)
-            if disc >= 0:
-                s = b - math.sqrt(disc)
-                if 0 < s < r:
-                    r, hit = s, True
-        pts.append((cx + r * math.cos(th), cy + r * math.sin(th), hit))
-    if sweep:
-        a1, a2 = math.radians(-62), math.radians(-28)
-        p1 = (cx + R * math.cos(a1), cy + R * math.sin(a1))
-        p2 = (cx + R * math.cos(a2), cy + R * math.sin(a2))
-        g.append(f'<path d="M{cx} {cy} L{p1[0]:.1f} {p1[1]:.1f} A{R} {R} 0 0 1 {p2[0]:.1f} {p2[1]:.1f} Z" '
-                 f'fill="{t["accent"]}" fill-opacity="0.13"/>')
-        g.append(f'<line x1="{cx}" y1="{cy}" x2="{p2[0]:.1f}" y2="{p2[1]:.1f}" stroke="{t["accent"]}" '
-                 f'stroke-width="1.2"/>')
-    pr = max(1.0, R / 52)
-    for x, y, hit in pts:
-        c, o = (t["accent"], 0.95) if hit else (t["ink"], 0.55)
-        g.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{pr:.1f}" fill="{c}" fill-opacity="{o}"/>')
-    g.append(f'<circle cx="{cx}" cy="{cy}" r="{max(2.2, R / 28):.1f}" fill="{t["accent"]}"/>')
-    return "".join(g)
-
-
 # ---------------------------------------------------------------- banner and figures
 def header(t):
     name = small_caps("Yiğit Salih Emecen", 42, 33, 0, 92, t["ink"], spacing="1.2")
@@ -108,7 +62,6 @@ def header(t):
             text(2, 124, "Robotics and software engineer", 21, t["muted"], style="italic"),
             small_caps("M.Sc. Manufacturing & Robotics, TU Wien", 14, 11.5, 2, 152, t["muted"],
                        spacing="1", weight="400"),
-            lidar_scene(660, 94, 86, t),
             rule(190, t)]
     return svg(W, 196, "".join(body), "Yiğit Salih Emecen, robotics and software engineer")
 
